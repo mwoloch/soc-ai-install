@@ -97,6 +97,15 @@ else
         fi
         INSTALL_DIR="$(realpath "$INSTALL_DIR")"
 
+        # ── Klucz licencyjny (aktywacja aplikacji) ────────────────────────────
+        LICENSE_KEY="${SOC_LICENSE_KEY:-}"
+        if [[ -z "$LICENSE_KEY" ]]; then
+            echo ""
+            echo -e "${BOLD}Aktywacja licencji aplikacji:${NC}"
+            read -rp "  Klucz licencyjny SOC AI Platform: " LICENSE_KEY
+            [[ -n "$LICENSE_KEY" ]] || die "Klucz licencyjny jest wymagany."
+        fi
+
     else
         # ── Ścieżka 3: serwer licencji (dystrybucja komercyjna) ───────────────
         echo ""

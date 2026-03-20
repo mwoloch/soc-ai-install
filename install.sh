@@ -230,7 +230,8 @@ fi
 # ─── Zaktualizuj porty w docker-compose jeśli zmienione ──────────────────────
 if [[ "$DASH_PORT" != "5000" || "$API_PORT" != "8000" ]]; then
     sed -i "s/\"5000:5000\"/\"${DASH_PORT}:5000\"/" docker-compose.yml
-    sed -i "s/\"8000:8000\"/\"${API_PORT}:8000\"/" docker-compose.yml
+    # Backend jest bindowany do 127.0.0.1 (bezpieczeństwo) — pasujemy do pełnego wzorca
+    sed -i "s/\"127\.0\.0\.1:8000:8000\"/\"127.0.0.1:${API_PORT}:8000\"/" docker-compose.yml
     ok "Porty zaktualizowane: dashboard=$DASH_PORT, API=$API_PORT"
 fi
 
@@ -281,7 +282,7 @@ echo -e "${GREEN}${BOLD}║   ✅  SOC AI Platform v${APP_VERSION} zainstalowana
 echo -e "${GREEN}${BOLD}╚══════════════════════════════════════════════════════════╝${NC}"
 echo ""
 echo -e "  🌐  Dashboard:  ${BOLD}http://${HOST}:${DASH_PORT}${NC}"
-echo -e "  📡  API:        ${BOLD}http://${HOST}:${API_PORT}/docs${NC}"
+echo -e "  📡  API health: ${BOLD}http://localhost:${API_PORT}/health${NC}  (tylko localhost)"
 echo ""
 echo -e "  🔑  Login:      ${BOLD}admin${NC}"
 echo -e "  🔑  Hasło:      ${BOLD}Admin123!${NC}"
